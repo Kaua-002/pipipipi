@@ -9,7 +9,7 @@
         margin: 0;
         background: black;
         overflow: hidden;
-        font-family: 'Matrix Code', monospace;
+        font-family: monospace;
     }
     #counter {
         position: fixed;
@@ -17,8 +17,7 @@
         width: 100%;
         text-align: center;
         color: #00ff00;
-        font-size: 20px;
-        font-family: 'Matrix Code', monospace;
+        font-size: 22px;
     }
     #message {
         position: fixed;
@@ -26,10 +25,10 @@
         left: 50%;
         transform: translate(-50%, -50%);
         color: #00ff00;
-        font-size: 28px;
-        font-family: 'Matrix Code', monospace;
+        font-size: 32px;
         display: none;
-        text-align: center;
+        font-family: monospace;
+        text-shadow: 0 0 10px #00ff00;
     }
 </style>
 </head>
@@ -40,7 +39,6 @@
 <div id="message">Eu te amo Echlei 💚</div>
 
 <script>
-// Configuração
 const phrase = "eu te amo";
 const clickGoal = 100;
 
@@ -50,12 +48,11 @@ const ctx = canvas.getContext("2d");
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
 
-// Fonte Matrix
 const fontSize = 16;
 const columns = canvas.width / fontSize;
 const drops = Array(Math.floor(columns)).fill(1);
 
-// Texto de fundo (vermelho)
+// Fundo com chuva vermelha
 function drawBackground() {
     ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -64,8 +61,7 @@ function drawBackground() {
     ctx.font = fontSize + "px monospace";
 
     for (let i = 0; i < drops.length; i++) {
-        const text = phrase;
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        ctx.fillText(phrase, i * fontSize, drops[i] * fontSize);
 
         if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
             drops[i] = 0;
@@ -74,19 +70,19 @@ function drawBackground() {
     }
 }
 
-// Coração formado por letras verdes (apenas borda)
+// Coração com borda Matrix (grande e centro transparente)
 function drawHeart() {
     ctx.font = fontSize + "px monospace";
     ctx.fillStyle = "#00ff00";
 
-    const scale = 15;
+    const scale = 25; // tamanho maior
     const offsetX = canvas.width / 2;
     const offsetY = canvas.height / 2 - 50;
 
-    for (let y = -10; y < 10; y += 0.5) {
-        for (let x = -10; x < 10; x += 0.5) {
+    for (let y = -12; y < 12; y += 0.4) {
+        for (let x = -12; x < 12; x += 0.4) {
             const eq = Math.pow(x * x + y * y - 1, 3) - x * x * y * y * y;
-            if (eq <= 0.0 && eq >= -0.3) {
+            if (eq <= 0.0 && eq >= -0.3) { // apenas bordas
                 ctx.fillText("eu te amo", offsetX + x * scale, offsetY + y * scale);
             }
         }
