@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Echlei 💚</title>
+<style>
+    body {
+        margin: 0;
+        background: black;
+        overflow: hidden;
+        font-family: 'Matrix Code', monospace;
+    }
+    #counter {
+        position: fixed;
+        bottom: 10px;
+        width: 100%;
+        text-align: center;
+        color: #00ff00;
+        font-size: 20px;
+        font-family: 'Matrix Code', monospace;
+    }
+    #message {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #00ff00;
+        font-size: 28px;
+        font-family: 'Matrix Code', monospace;
+        display: none;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+<div id="counter">Cliques: 0 / 100</div>
+<div id="message">Eu te amo Echlei 💚</div>
+
+<script>
+// Configuração
+const phrase = "eu te amo";
+const clickGoal = 100;
+
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+
+// Fonte Matrix
+const fontSize = 16;
+const columns = canvas.width / fontSize;
+const drops = Array(Math.floor(columns)).fill(1);
+
+// Texto de fundo (vermelho)
+function drawBackground() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#ff0000";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+        const text = phrase;
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+        }
+        drops[i]++;
+    }
+}
+
+// Coração formado por letras verdes (apenas borda)
+function drawHeart() {
+    ctx.font = fontSize + "px monospace";
+    ctx.fillStyle = "#00ff00";
+
+    const scale = 15;
+    const offsetX = canvas.width / 2;
+    const offsetY = canvas.height / 2 - 50;
+
+    for (let y = -10; y < 10; y += 0.5) {
+        for (let x = -10; x < 10; x += 0.5) {
+            const eq = Math.pow(x * x + y * y - 1, 3) - x * x * y * y * y;
+            if (eq <= 0.0 && eq >= -0.3) {
+                ctx.fillText("eu te amo", offsetX + x * scale, offsetY + y * scale);
+            }
+        }
+    }
+}
+
+let clicks = 0;
+document.addEventListener("click", () => {
+    if (clicks < clickGoal) {
+        clicks++;
+        document.getElementById("counter").innerText = `Cliques: ${clicks} / ${clickGoal}`;
+    }
+    if (clicks >= clickGoal) {
+        document.getElementById("message").style.display = "block";
+    }
+});
+
+function animate() {
+    drawBackground();
+    drawHeart();
+    requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+</body>
+</html>
